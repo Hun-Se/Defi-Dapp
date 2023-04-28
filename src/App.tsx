@@ -1,13 +1,11 @@
 import React from "react";
 import "./App.css";
-import ConnectWallet from "./features/connect_wallet/ConnectWallet";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <ConnectWallet />
-      </header>
+      <HomePage />
     </div>
   );
 }
