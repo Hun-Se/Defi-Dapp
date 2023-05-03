@@ -7,8 +7,10 @@ import {
   selectRwdBalance,
   selectStakingBalance,
   selectTetherBalance,
+  unstakeTokenActions,
 } from "../../redux/wallet/connectWalletSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import StyledButton from "../Button/Button";
 
 const StakingSection = () => {
   const dispatch = useAppDispatch();
@@ -25,44 +27,47 @@ const StakingSection = () => {
     }
   };
 
+  const onUnStakeClickHandler = (event: React.MouseEvent) => {
+    event.preventDefault();
+    dispatch(unstakeTokenActions());
+  };
+
   return (
     <>
       <StyledStakingSection>
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">
-                {web3.utils.fromWei(stakingBalance, "ether")} Staking Balance
-              </th>
-              <th scope="col">
-                {web3.utils.fromWei(rwdBalance, "ether")} RewardBalance
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>USDT</td>
-              <td>RWD</td>
-            </tr>
-          </tbody>
-        </table>
+        <StyledBoard>
+          <StyledCard>
+            Staking Balance: {web3.utils.fromWei(stakingBalance, "ether")} USDT
+          </StyledCard>
+          <StyledCard>
+            Reward Balance: {web3.utils.fromWei(rwdBalance, "ether")} RWD
+          </StyledCard>
+        </StyledBoard>
         <div>
           <form action="submit" onSubmit={onStakeSubmitHandler}>
+            <StyledLaberlContainer>
+              <img src={tether} alt="tether" />
+              <StyledLabel>Stake USDT</StyledLabel>
+            </StyledLaberlContainer>
             <div>
-              <label>Stake Token</label>
-              <span>Balance:{web3.utils.fromWei(tetherBalance, "ether")}</span>
+              <StyledInput type="text" placeholder="0" required ref={input} />
+              <StyledBalnce>
+                Balance:{web3.utils.fromWei(tetherBalance, "ether")} USDT
+              </StyledBalnce>
             </div>
-            <div>
-              <input type="text" placeholder="0" required ref={input} />
-              <div>
-                <img src={tether} alt="tether" />
-                USDT
-              </div>
-            </div>
-            <button type="submit">Deposit</button>
+            <StyledButtonContainer>
+              <StyledButton connect={"connect"} type="submit">
+                Deposit
+              </StyledButton>
+              <StyledButton
+                connect={"connect"}
+                type="submit"
+                onClick={onUnStakeClickHandler}
+              >
+                Withdraw
+              </StyledButton>
+            </StyledButtonContainer>
           </form>
-          <button type="submit">Withdraw</button>
-          <div>AirDrop</div>
         </div>
       </StyledStakingSection>
     </>
@@ -70,7 +75,55 @@ const StakingSection = () => {
 };
 
 const StyledStakingSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   color: white;
 `;
 
+const StyledBoard = styled.div`
+  margin-bottom: 100px;
+`;
+
+const StyledCard = styled.span`
+  font-size: 30px;
+  padding: 20px;
+  margin: 10px;
+  background: #171822;
+  border: 1px solid #303241;
+  border-radius: 12px;
+`;
+
+const StyledInput = styled.input`
+  width: 404px;
+  padding: 10px;
+  background: linear-gradient(180deg, #171822 0%, #171822 100%);
+  border: 1px solid #303241;
+  border-radius: 12px;
+  color: white;
+  font-size: 20px;
+  line-height: 30px;
+`;
+
+const StyledLaberlContainer = styled.div`
+  position: relative;
+  margin-bottom: 10px;
+`;
+
+const StyledLabel = styled.label`
+  position: absolute;
+  top: 9px;
+  margin-left: 5px;
+`;
+
+const StyledBalnce = styled.div`
+  margin: 20px 0;
+  font-size: 20px;
+`;
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 export default StakingSection;
