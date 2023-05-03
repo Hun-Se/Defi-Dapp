@@ -8,7 +8,7 @@ import {
 import StyledButton from "../Button/Button";
 import styled from "styled-components";
 
-function Header() {
+const Header = () => {
   const dispatch = useAppDispatch();
   const account = useAppSelector(selectAccount);
   const status = useAppSelector(selectConnectStatus);
@@ -36,12 +36,12 @@ function Header() {
       </StyledHeader>
     </>
   );
-}
+};
 
 const StyledHeader = styled.header`
   display: flex;
   justify-content: right;
-  margin: 10px;
+  margin: 10px 10px 50px 10px;
 `;
 
 export default Header;
