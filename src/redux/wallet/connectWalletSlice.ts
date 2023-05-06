@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import Web3 from "web3";
 import Tether from "../../truffle_abis/Tether.json";
-import RWD from "../../truffle_abis/RWD.json";
+import Rwd from "../../truffle_abis/RWD.json";
 import DecentralBank from "../../truffle_abis/DecentralBank.json";
 import { Contract } from "web3-eth-contract";
 
@@ -18,7 +18,7 @@ export interface connectWalletState {
   status: "idle" | "loading" | "failed";
 }
 
-type Networks = {
+export type Networks = {
   [networkId: number]: {
     address: string;
   };
@@ -49,8 +49,8 @@ export const asyncConnectWallet = createAsyncThunk(
     const tetherBalance = await tether.methods.balanceOf(account[0]).call();
 
     // 보상토큰(RWD) contract 불러오기
-    const rwdData = (RWD.networks as Networks)[networkId];
-    const rwd = new web3.eth.Contract(RWD.abi as any, rwdData.address);
+    const rwdData = (Rwd.networks as Networks)[networkId];
+    const rwd = new web3.eth.Contract(Rwd.abi as any, rwdData.address);
     const rwdBalance = await rwd.methods.balanceOf(account[0]).call();
 
     // DecentralBank contract 불러오기
@@ -93,6 +93,12 @@ export const ConnectWalletSlice = createSlice({
         .unstakeTokens()
         .send({ from: state.account });
     },
+    issueTokens: (state, action) => {
+      console.log(state.decentralBankAddress);
+      (state.decentralBank as Contract).methods
+        .issueTokens()
+        .send({ from: state.account });
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(asyncConnectWallet.pending, (state, action) => {
@@ -104,6 +110,10 @@ export const ConnectWalletSlice = createSlice({
       if (action.payload.tether !== undefined) {
         state.tether = action.payload.tether;
         state.tetherBalance = action.payload.tetherBalance;
+      }
+      if (action.payload.rwd !== undefined) {
+        state.rwd = action.payload.rwd;
+        state.rwdBalance = action.payload.rwdBalance;
       }
       state.stakingBalance = action.payload.stakingBalance;
       state.decentralBank = action.payload.decentralBank;
@@ -122,9 +132,10 @@ export const selectTetherBalance = (state: RootState) =>
 export const selectStakingBalance = (state: RootState) =>
   state.connect.stakingBalance;
 export const selectRwdBalance = (state: RootState) => state.connect.rwdBalance;
-
 export const selectConnectStatus = (state: RootState) => state.connect.status;
 
 export const stakeTokenActions = ConnectWalletSlice.actions.stakeTokens;
 export const unstakeTokenActions = ConnectWalletSlice.actions.unstakeTokens;
+export const issueTokensActions = ConnectWalletSlice.actions.issueTokens;
+
 export default ConnectWalletSlice.reducer;
