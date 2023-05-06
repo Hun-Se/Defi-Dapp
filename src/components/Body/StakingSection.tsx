@@ -11,6 +11,7 @@ import {
 } from "../../redux/wallet/connectWalletSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import StyledButton from "../Button/Button";
+import Airdrop from "./Airdrop";
 
 const StakingSection = () => {
   const dispatch = useAppDispatch();
@@ -69,6 +70,7 @@ const StakingSection = () => {
             </StyledButtonContainer>
           </form>
         </div>
+        <Airdrop />
       </StyledStakingSection>
     </>
   );
