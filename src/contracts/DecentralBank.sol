@@ -1,8 +1,8 @@
-// SPDX-License-Identifier: MIT
-pragma solidity >=0.4.25 <0.9.0;
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity >=0.7.0 <0.9.0;
 
-import "./RWD.sol";
-import "./Tether.sol";
+import './RWD.sol';
+import './Tether.sol';
 
 contract DecentralBank {
   string public name = 'Decentral Bank';
@@ -12,7 +12,7 @@ contract DecentralBank {
 
   address[] public stakers;
 
-  mapping(address => uint256) public stakingBalance;
+  mapping(address => uint) public stakingBalance;
   mapping(address => bool) public hasStaked;
   mapping(address => bool) public isStaking;
 
@@ -60,18 +60,18 @@ function depositTokens(uint _amount) public {
 
   }
 
-// issue rewards
-function issueTokens() public {
-  // Only owner can call this function
-  require(msg.sender == owner, 'caller must be the owner');
-  // issue tokens to all stakers
-  for (uint i=0; i<stakers.length; i++) {
-    address recipient = stakers[i];
-    // 9 to create incentive for staking
-    uint balance = stakingBalance[recipient] / 9;
-    if(balance > 0) {
-    rwd.transfer(recipient, balance);
-      }
-    }
-  }
+  // issue rewards
+        function issueTokens() public {
+            // Only owner can call this function
+            require(msg.sender == owner, 'caller must be the owner');
+
+            // issue tokens to all stakers
+            for (uint i=0; i<stakers.length; i++) {
+                address recipient = stakers[i]; 
+                uint balance = stakingBalance[recipient] / 10;
+                if(balance > 0) {
+                rwd.transfer(recipient, balance);
+            }
+       }
+       }
 }
