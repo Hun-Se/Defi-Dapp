@@ -5,6 +5,7 @@ import Tether from "../../truffle_abis/Tether.json";
 import Rwd from "../../truffle_abis/RWD.json";
 import DecentralBank from "../../truffle_abis/DecentralBank.json";
 import { Contract } from "web3-eth-contract";
+import { isJSDocUnknownTag } from "typescript";
 
 export interface connectWalletState {
   account: string;
@@ -40,7 +41,7 @@ export const asyncConnectWallet = createAsyncThunk(
   "connect/asyncConnectWallet",
   async () => {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
-    const account = await web3.eth.getAccounts();
+    const account = await web3.eth.requestAccounts();
     const networkId = await web3.eth.net.getId();
 
     // 테더 contract 불러오기
@@ -93,8 +94,7 @@ export const ConnectWalletSlice = createSlice({
         .unstakeTokens()
         .send({ from: state.account });
     },
-    issueTokens: (state, action) => {
-      console.log(state.decentralBankAddress);
+    issueTokens: (state) => {
       (state.decentralBank as Contract).methods
         .issueTokens()
         .send({ from: state.account });

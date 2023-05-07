@@ -1,6 +1,6 @@
 <h1>Defi 프로젝트</h1>
- 
-![화면 기록 2023-05-08 오전 5 05 58](https://user-images.githubusercontent.com/70246174/236700724-d5d8c16f-43d9-4710-ab24-1c4e4469a709.gif)
+
+<img width="100%" src="https://user-images.githubusercontent.com/70246174/236700724-d5d8c16f-43d9-4710-ab24-1c4e4469a709.gif"/>
 
 <br>
 

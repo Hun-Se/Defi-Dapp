@@ -44,6 +44,7 @@ const StakingSection = () => {
             Reward Balance: {web3.utils.fromWei(rwdBalance, "ether")} RWD
           </StyledCard>
         </StyledBoard>
+        <Airdrop />
         <div>
           <form action="submit" onSubmit={onStakeSubmitHandler}>
             <StyledLaberlContainer>
@@ -70,7 +71,6 @@ const StakingSection = () => {
             </StyledButtonContainer>
           </form>
         </div>
-        <Airdrop />
       </StyledStakingSection>
     </>
   );

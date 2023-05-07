@@ -5,28 +5,32 @@ import {
   issueTokensActions,
 } from "../../redux/wallet/connectWalletSlice";
 import styled from "styled-components";
+import { asyncConnectWallet } from "../../redux/wallet/connectWalletSlice";
 
 const Airdrop = () => {
-  const [time, setTime] = useState(30);
+  const [time, setTime] = useState(10);
   const dispatch = useAppDispatch();
   const stakingBalance = useAppSelector(selectStakingBalance);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime((prev) => prev - 1);
-    }, 1000);
-    if (time === 0) {
-      if (stakingBalance >= "20000000000000000000") {
-        dispatch(issueTokensActions(stakingBalance));
+    // dispatch(asyncConnectWallet);
+    if (stakingBalance >= "20000000000000000000") {
+      const timer = setInterval(() => {
+        setTime((prev) => prev - 1);
+      }, 1000);
+      if (time === 0) {
+        dispatch(issueTokensActions());
+        clearInterval(timer);
       }
-      clearInterval(timer);
+      return () => clearInterval(timer);
     }
-    return () => clearInterval(timer);
-  }, [time]);
+  }, [time, stakingBalance]);
 
   return (
     <>
-      <StyledAirdrop>{time}</StyledAirdrop>
+      <StyledAirdrop>
+        <span>TIMER</span>: {time}
+      </StyledAirdrop>
     </>
   );
 };
